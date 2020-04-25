@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Города</title>
+	<style>
+		body{
+			text-align: center;
+			font-size: 20px;
+		}
+		input{
+			text-align: center;
+			font-size: 1.2em;
+			border-radius: 10px;
+			border-style: solid;
+		}
+		.first {
+
+		}
+		.next{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<input type="text" name="city" value="" id="city">
+	<pre class="next" id="text">Ваш город</pre>
+	<input type="button" name="change" value="Удалить" class="next" id="button">
+	<script type="text/javascript">
+		function getCookie(name) {
+  			let matches = document.cookie.match(new RegExp(
+    			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  			));
+  			//но можно было бы просто сплитануть через '=' [0] - имя, [1] - значение, т.к. мы тут сами рулим
+  			//и кучи куков тут не ожидается
+ 			return matches ? decodeURIComponent(matches[1]) : undefined;
+		};
+
+		let city = document.querySelector("#city");
+		let cookie_ = getCookie('city');
+		if (!cookie_){
+			city.onchange = ()=>{
+				document.cookie = `city=${encodeURIComponent(city.value)}`; //иначе с кириллицей в utf8 будет беда
+				city.disabled = true; //так как других действий по ДЗ не предусмотрено, отключим поле ввода
+			}
+		}
+		else{
+			console.log(cookie_)
+			let button = document.querySelector('#button');
+			let text = document.querySelector("#text");			
+			
+			city.style.cssText = 'display: none;';
+			button.classList.remove('next');
+			text.classList.remove('next');
+			text.innerText = `Ваш город - ${cookie_}`;
+			button.onclick = ()=>{
+			{
+				document.cookie = `city=; max-age=-1`; //а тут монопенисуально кодировка, просто удаляем по просрочке
+				button.disabled = true;
+			}};
+			//предполагается ручное обновление странички
+		}
+	</script>
+</body>
+</html>

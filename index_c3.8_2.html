@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Кнопки</title>
+</head>
+<style type="text/css">
+    body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 20px;
+        font-family: sans-serif;
+    }
+    input{
+        font-size: 1.2em;
+        border-radius: 5px;
+        border-style: solid;
+    }
+    label{
+        line-height: 2;
+    }
+    .survey{
+        border-radius: 5px;
+        border-style: solid;
+        padding: 0 20px;
+        margin: 10px 0;
+    }
+</style>
+<body>
+    <h3>Время пришло, йуный падаван!</h3>
+    <pre>сделай свой выбор</pre>
+    <div class="survey">
+        <input type="checkbox" name="dnt1me" class="checks" id="dnt1me"><label for="dnt1me">Не звоните мне!</label><br>
+        <input type="checkbox" name="readnAgree" class="checks" id="readnAgree"><label for="readnAgree">Прочитал и плачу</label><br>
+        <input type="checkbox" name="dntEatMe" class="checks" id="dntEatMe"><label for="dntEatMe">Это был не я!</label><br>
+        <input type="checkbox" name="free2Check" class="checks" id="free2Check"><label for="free2Check">Свободу попугаям!</label><br>
+        <input type="checkbox" name="morethn12" class="checks" id="morethn12"><label for="morethn12">Мне? больше 12?</label><br>
+        <input type="checkbox" name="godblessed" class="checks" id="godblessed"><label for="godblessed">Это не те дроиды, что вы ищете</label><br>
+    </div>
+    <div>
+        <input type="button" name="but_next" value="Сохранить" class="buts" id="but_next">
+        <input type="button" name="but_clear" value="Очистить" class="buts" id="but_clear">
+    </div>
+<script type="text/javascript">
+    const lSi = localStorage.getItem('chck0');
+    const checks = document.querySelectorAll('.checks');
+    const but_next = document.querySelector('#but_next');
+    const but_clear = document.querySelector('#but_clear');
+
+    if (lSi) {
+//запись есть, восстанавливаем значения и выключаем инпуты
+        for(let i = 0; i < checks.length; i++){
+            checks[i].checked = localStorage.getItem(`chck${i}`)=="true"?true:false;
+            checks[i].disabled = true;
+        }
+        but_next.disabled = true;        
+    }
+    else{
+//записи нет
+        for(let i = 0; i < checks.length; i++){
+            localStorage.setItem(`chck${i}`,"false");
+        }
+        but_clear.disabled = true;        
+    }
+    
+    but_clear.onclick = ()=>{
+            for(let i = 0; i < checks.length; i++){
+                localStorage.removeItem(`chck${i}`)
+                checks[i].checked = false;
+                checks[i].disabled = false;
+            }
+                //включаем кнопку Сохранить, 
+                but_clear.disabled = true;
+                but_next.disabled = false;
+    }
+    
+    but_next.onclick = ()=>{
+            for(let i = 0; i < checks.length; i++){
+                localStorage.setItem(`chck${i}`,checks[i].checked);
+                checks[i].disabled = true;
+            }
+            but_clear.disabled = false;
+            but_next.disabled = true;
+    }
+</script>
+</body>
+</html>
